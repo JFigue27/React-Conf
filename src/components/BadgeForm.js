@@ -15,12 +15,12 @@ export default class BadgeForm extends Component {
 
   handleSubmit = e => {
     console.log('form was submit');
-    console.log(this.state);
+    console.log(this.props.formValues);
     e.preventDefault();
   };
   render() {
     return (
-      <div>
+      <React.Fragment>
         <h1>New Attender</h1>
         <form onSubmit={this.handleSubmit}>
           <div className='form-group'>
@@ -71,7 +71,7 @@ export default class BadgeForm extends Component {
             Save
           </button>
         </form>
-      </div>
+      </React.Fragment>
     );
   }
 }
