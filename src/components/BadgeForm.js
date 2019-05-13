@@ -11,18 +11,18 @@ export default class BadgeForm extends Component {
 
   handleClick = () => {
     console.log('Button was Clicked');
+    console.log(this.props.formValues);
+    console.log(this.props.error);
   };
 
   handleSubmit = e => {
     console.log('form was submit');
-    console.log(this.props.formValues);
     e.preventDefault();
   };
   render() {
     return (
       <React.Fragment>
-        <h1>New Attender</h1>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.props.onSubmit}>
           <div className='form-group'>
             <label>First Name</label>
             <input
@@ -70,6 +70,7 @@ export default class BadgeForm extends Component {
           <button onClick={this.handleClick} className='btn btn-primary'>
             Save
           </button>
+          {this.props.error && <p className='text-danger'>{this.props.error.message}</p>}
         </form>
       </React.Fragment>
     );

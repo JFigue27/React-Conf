@@ -1,21 +1,38 @@
 import React, { Component } from 'react';
 import header from '../images/platziconf-logo.svg';
-import './styles/BadgeNew.css';
+import './styles/BadgeEdit.css';
 import Badge from '../components/Badge';
 import BadgeForm from '../components/BadgeForm';
 import api from '../api';
 import PageLoading from '../components/PageLoading';
 
-export default class BadgeNew extends Component {
+export default class BadgeEdit extends Component {
   state = {
     form: {
-      loading: false,
+      loading: true,
       error: null,
       firstName: '',
       lastName: '',
       email: '',
       jobTitle: '',
       twitter: ''
+    }
+  };
+
+  componentDidMount() {
+    this.fetch();
+  }
+
+  fetch = async e => {
+    this.setState({ loading: true, error: null });
+    try {
+      const data = await api.badges.read(this.props.match.params.badgeId);
+      this.setState({ loading: false, form: data });
+    } catch (error) {
+      this.setState({
+        loading: false,
+        error: error
+      });
     }
   };
 
@@ -32,7 +49,7 @@ export default class BadgeNew extends Component {
     e.preventDefault();
     this.setState({ loading: true });
     try {
-      await api.badges.create(this.state.form);
+      await api.badges.update(this.props.match.params.badgeId, this.state.form);
       this.setState({ loading: false });
       this.props.history.push('/badges');
     } catch (error) {
@@ -48,8 +65,8 @@ export default class BadgeNew extends Component {
 
     return (
       <React.Fragment>
-        <div className='BadgeNew__hero'>
-          <img className='BadgeNew__hero-image img-fluid' src={header} alt='logo' />
+        <div className='BadgeEdit__hero'>
+          <img className='BadgeEdit__hero-image img-fluid' src={header} alt='logo' />
         </div>
         <div className='container'>
           <div className='row'>
@@ -63,7 +80,7 @@ export default class BadgeNew extends Component {
               />
             </div>
             <div className='col-6'>
-              <h1>New Attender</h1>
+              <h1>Edit Attender</h1>
               <BadgeForm onChange={this.handleChange} onSubmit={this.handleSubmit} formValues={this.state.form} error={this.state.error} />
             </div>
           </div>
